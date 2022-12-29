@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <link rel="stylesheet" href="/static/css/text_process.css" type="text/css"/>
+  <script src="/static/js/text_process.js" type="text/javascript"></script>
+  <div class="row">
+    <div class="mb-3 col">
+      <textarea class="form-control" id="originalText" placeholder="输入文本"></textarea>
+    </div>
+    <div class="mb-3 col">
+      <textarea class="form-control" id="outputText" placeholder="此处输出结果"></textarea>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+    <input class="btn btn-success" type="button" value="互换" onclick="switchText()"/>
+    </div>
+  </div>
+  <div id="operations">
+    <div class="row">
+      <div class="col">
+        <h5>包含</h5>
+        <input class="form-control" id="containStrTextField" type="text"/><br>
+        <input class="btn btn-primary m-1" type="button" value="提取行" onclick="contain();"/><br>
+        <input class="btn btn-primary m-1" type="button" value="提取并删除关键词" onclick="deleteContainPart();"/>
+      </div>
+      <div class="col">
+        <h5>原</h5>
+        <input class="form-control" id="substringSrcText" type="text"/>
+        <h5>替换为</h5>
+        <input class="form-control" id="substringTargetText" type="text"/><br>
+        <input class="btn btn-primary m-1" type="button" value="替换" onclick="substring();"/>
+      </div>
+      <div class="col">
+        <h5>起始行</h5>
+        <input class="form-control" id="startRow" type="text"/>
+        <h5>步长</h5>
+        <input class="form-control" id="stepLength" type="text"/><br>
+        <input class="btn btn-primary m-1" type="button" value="提取" onclick="lineStepExtract();"/>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

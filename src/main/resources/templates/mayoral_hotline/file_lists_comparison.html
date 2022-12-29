@@ -1,0 +1,17 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <h3>receivedNotHas</h3>
+  <h5 th:text="${#lists.size(receivedNotHas)}"></h5>
+  <div th:each="receive:${receivedNotHas}">
+    <span th:text="${receive}"/>
+  </div>
+  <h3>respondedNotHas</h3>
+  <h5 th:text="${#lists.size(respondedNotHas)}"></h5>
+  <div th:each="response:${respondedNotHas}">
+    <span th:text="${response}"/>
+  </div>
+</div>
+</body>
+</html>

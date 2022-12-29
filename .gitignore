@@ -1,0 +1,32 @@
+#java
+*.class
+
+#package file
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+
+#Intellij idea
+.idea/
+/idea/
+/build/
+/bin/
+*.ipr
+*.iml
+*.iws
+
+#gradle
+.gradle/
+/gradle/
+gradlew
+gradlew.bat
+
+# temp file
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp

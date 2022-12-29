@@ -1,0 +1,64 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <div class="col-10">
+    <h1>来电接听</h1>
+    <form class="form-inline" role="form" th:object="${incomingPhone}" action="/incoming_phone/add" method="POST">
+      <h3>手机号码</h3>
+      <input class="form-control col-6" type="text" th:field="*{phoneNo}" maxlength="11" minlength="11" required/>
+      <span th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}"></span>
+      <h3>详情</h3>
+      <textarea class="form-control" th:field="*{detail}" id="" cols="30" rows="3" required></textarea>
+      <h3>呼入时间</h3>
+      <input class="form-control col-6" type="text" placeholder="yyyy-MM-dd HH:mm" th:field="*{callInTime}"
+             th:value="${#dates.format(incomingPhone.callInTime,'yyyy-MM-dd HH:mm')}" required/>
+      <hr>
+      <div class="form-check-inline m-1" th:each="type:${issueTypeList}">
+        <input type="radio" name="issueType" th:value="${type.id}"
+               th:id="'issueType'+${type.id}" class="radio-inline"/>
+        <label class="form-check-label" th:for="'issueType'+${type.id}" th:text="${type.name}">
+          issue type
+        </label>
+      </div>
+      <hr>
+      <div class="form-check-inline m-1" th:each="brand:${expressBrandList}">
+        <input type="radio" name="expressBrand" th:value="${brand.id}"
+               th:id="'expressBrand'+${brand.id}" class="radio-inline"/>
+        <label class="form-check-label" th:for="'expressBrand'+${brand.id}" th:text="${brand.name}">
+          issue type
+        </label>
+      </div>
+      <hr>
+      <input class="btn btn-primary" type="submit" value="添加"/>
+    </form>
+    <hr>
+    <h2>本周记录</h2>
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th style="width: 15%;">手机号码</th>
+          <th style="width: 8%;">类型</th>
+          <th style="width: 8%;">企业</th>
+          <th>详情</th>
+          <th style="width: 16%;">呼入时间</th>
+          <th style="width: 16%;">创建时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="call:${incomingPhoneList}">
+          <td th:text="${call.phoneNo}"></td>
+          <td th:text="${call.issueType.name}"></td>
+          <td th:text="${call.expressBrand.name}"></td>
+          <td th:text="${call.detail}"></td>
+          <td th:text="${#dates.format(call.callInTime,'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${#dates.format(call.createTime,'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

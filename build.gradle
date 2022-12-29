@@ -1,0 +1,45 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java'
+    id("org.springframework.boot") version "3.0.0" apply false
+    id("io.spring.dependency-management") version "1.1.0"
+}
+
+group 'pers.wangsc'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf:3.0.1')
+    implementation('com.mysql:mysql-connector-j:8.0.31')
+    implementation('com.alibaba:druid:1.2.15')
+    implementation(name:'edocument')
+    implementation('org.apache.poi:poi-scratchpad:5.2.3')
+    implementation('org.apache.poi:poi:5.2.3')
+    implementation('org.apache.poi:poi-ooxml:5.2.3')
+    implementation('junit:junit:4.13.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+}
+
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+    imports {
+        mavenBom(SpringBootPlugin.BOM_COORDINATES)
+    }
+}
+test {
+    useJUnitPlatform()
+}
