@@ -6,15 +6,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 
-@Entity(name = "express_brand")
+@Entity
 public class ExpressBrand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(length=16)
+    @Column(length = 16)
     private String name;
 
     public ExpressBrand() {
+    }
+
+    public ExpressBrand(Integer id) {
+        this.id = id;
     }
 
     public ExpressBrand(Integer id, String name) {

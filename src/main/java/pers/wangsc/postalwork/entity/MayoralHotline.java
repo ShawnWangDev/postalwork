@@ -1,5 +1,6 @@
 package pers.wangsc.postalwork.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.text.ParseException;
@@ -7,11 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name = "mayoral_hotline")
+@Entity
 public class MayoralHotline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(length = 128)
+    private String fileName;
     private String complaintType;
     private String complainantName;
     private String complainantCalledPhoneNumber;
@@ -22,28 +25,22 @@ public class MayoralHotline {
     private Date deadlineDateTime;
     private String complainantAddress;
     private String appealPurpose;
+    @Column(length = 1024)
     private String appealDetail;
+    @Column(length = 1024)
     private String reply;
+    @Column(length = 1024)
     private String remark;
     private String satisfaction;
 
-    private String additionalRemark;
-    @OneToOne
-    @JoinColumn(name = "express_brand_id", referencedColumnName = "id")
-    private ExpressBrand expressBrand;
-    @OneToOne
-    @JoinColumn(name = "issue_type_id", referencedColumnName = "id")
-    private IssueType issueType;
-    @OneToOne
-    @JoinColumn(name = "issue_condition_id", referencedColumnName = "id")
-    private IssueCondition issueCondition;
+    private Date createDateTime;
 
     public MayoralHotline() {
     }
 
     public MayoralHotline(List<String> data) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if (data.size() == 14) {
+        if (data.size() == 15) {
             complaintType = data.get(0);
             complainantName = data.get(1);
             complainantCalledPhoneNumber = data.get(2);
@@ -62,6 +59,7 @@ public class MayoralHotline {
             reply = data.get(11);
             remark = data.get(12);
             satisfaction = data.get(13);
+            fileName = data.get(14);
         }
     }
 
@@ -71,6 +69,14 @@ public class MayoralHotline {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getComplaintType() {
@@ -185,51 +191,19 @@ public class MayoralHotline {
         this.satisfaction = satisfaction;
     }
 
-    public String getAdditionalRemark() {
-        return additionalRemark;
+    public Date getCreateDateTime() {
+        return createDateTime;
     }
 
-    public void setAdditionalRemark(String additionalRemark) {
-        this.additionalRemark = additionalRemark;
-    }
-
-    public ExpressBrand getExpressBrand() {
-        return expressBrand;
-    }
-
-    public void setExpressBrand(ExpressBrand expressBrand) {
-        this.expressBrand = expressBrand;
-    }
-
-    public void setExpressBrand(List<ExpressBrand> expressBrandList) {
-        for (var express : expressBrandList) {
-            String expressName = express.getName();
-            if (appealDetail.contains(expressName) || appealPurpose.contains(expressName)) {
-                expressBrand=express;
-            }
-        }
-    }
-
-    public IssueType getIssueType() {
-        return issueType;
-    }
-
-    public void setIssueType(IssueType issueType) {
-        this.issueType = issueType;
-    }
-
-    public IssueCondition getIssueCondition() {
-        return issueCondition;
-    }
-
-    public void setIssueCondition(IssueCondition issueCondition) {
-        this.issueCondition = issueCondition;
+    public void setCreateDateTime(Date createDateTime) {
+        this.createDateTime = createDateTime;
     }
 
     @Override
     public String toString() {
         return "MayoralHotline{" +
                 "id=" + id +
+                ", fileName='" + fileName + '\'' +
                 ", complaintType='" + complaintType + '\'' +
                 ", complainantName='" + complainantName + '\'' +
                 ", complainantCalledPhoneNumber='" + complainantCalledPhoneNumber + '\'' +
@@ -244,10 +218,7 @@ public class MayoralHotline {
                 ", reply='" + reply + '\'' +
                 ", remark='" + remark + '\'' +
                 ", satisfaction='" + satisfaction + '\'' +
-                ", additionalRemark='" + additionalRemark + '\'' +
-                ", expressBrand=" + expressBrand +
-                ", issueType=" + issueType +
-                ", issueCondition=" + issueCondition +
+                ", createDateTime=" + createDateTime +
                 '}';
     }
 }

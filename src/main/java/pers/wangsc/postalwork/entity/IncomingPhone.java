@@ -2,13 +2,12 @@ package pers.wangsc.postalwork.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
-@Entity(name = "incoming_phone")
+@Entity
 public class IncomingPhone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

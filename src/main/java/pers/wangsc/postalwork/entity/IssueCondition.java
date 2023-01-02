@@ -2,7 +2,7 @@ package pers.wangsc.postalwork.entity;
 
 import jakarta.persistence.*;
 
-@Entity(name = "issue_condition")
+@Entity
 public class IssueCondition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +11,10 @@ public class IssueCondition {
     private String name;
 
     public IssueCondition() {
+    }
+
+    public IssueCondition(Integer id){
+        this.id=id;
     }
 
     public IssueCondition(Integer id, String name) {

@@ -2,7 +2,7 @@ package pers.wangsc.postalwork.entity;
 
 import jakarta.persistence.*;
 
-@Entity(name = "issue_type")
+@Entity
 public class IssueType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +11,10 @@ public class IssueType {
     private String name;
 
     public IssueType() {
+    }
+
+    public IssueType(Integer id){
+        this.id=id;
     }
 
     public IssueType(Integer id, String name) {

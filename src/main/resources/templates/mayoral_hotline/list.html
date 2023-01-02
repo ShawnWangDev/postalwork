@@ -2,7 +2,175 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
 <body>
 <div th:fragment="content">
-  list
+  <style>
+    .table img{
+      width:60px;
+      height:60px;
+    }
+    .expressBrandSelect{
+      width:60px;
+    }
+    .issue_condition_id_1{
+      /*
+      待设定
+      Light Gray
+      */
+      background-color: #fff;
+    }
+    .issue_condition_id_2{
+      /*
+      已通知
+      Light Gray
+      */
+      background-color: #d3d3d3;
+    }
+    .issue_condition_id_3{
+      /*
+      已催办
+      Dark Gray
+      */
+      background-color: #a9a9a9;
+    }
+    .issue_condition_id_4{
+      /*
+      达成一致
+      Blizzard Blue
+      */
+      background-color: #ace5ee;
+    }
+    .issue_condition_id_5{
+      /*
+      未达成一致
+      Glaucous
+      */
+      background-color: #6082b6;
+    }
+    .issue_condition_id_6{
+      /*
+      正在处理
+      Dark Turquoise
+      */
+      background-color: #00ced1;
+    }
+
+    .issue_condition_id_8{
+      /*
+      建议联系发件方
+      Pastel Orange
+      */
+      background-color: #ffb347;
+    }
+    .issue_condition_id_9{
+      /*
+      通知企业前已妥投
+      Yellow-green (Crayola)
+      */
+      background-color: #c5e384;
+    }
+    .issue_condition_id_10{
+      /*
+      Peru
+      */
+      background-color: #cd853f;
+    }
+
+  </style>
+  <div>
+    <form action="/mayoral_hotline_labeled/add_missing_mayoral_hotline" method="post">
+      <button class="btn btn-primary">添加缺失项</button>
+    </form>
+  </div>
+  <div th:if="${addMissingMayoralHotlineAmount!=null}">
+    <span>增加市长热线数量：</span><span th:text="${addMissingMayoralHotlineAmount}"></span>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th style="width:3%" scope="col" th:text="序号"></th>
+      <th style="width:5%" scope="col" th:text="文件名"></th>
+      <th style="width:5%" scope="col" th:text="品牌"></th>
+      <th style="width:5%" scope="col" th:text="手机"></th>
+      <th style="width:10%" scope="col" th:text="申诉目的"></th>
+      <th scope="col" th:text="申诉详情"></th>
+      <th style="width:10%" scope="col" th:text="办结、申诉时间"></th>
+      <th style="width:10%" th:text="类型"></th>
+      <th style="width:5%" th:text="状态"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <block th:if="${hotlineLabeledList}">
+      <tr th:each="hotlineLabeled,hotlineState:${hotlineLabeledList}"
+          th:class="${'issue_condition_id_'+hotlineLabeled.issueCondition.id}">
+        <td th:text="${hotlineState.index+1}"></td>
+        <td th:text="${hotlineLabeled.mayoralHotline.fileName}"></td>
+        <block th:if="${hotlineLabeled.expressBrand}">
+          <td>
+            <block th:switch="${hotlineLabeled.expressBrand.id}">
+              <img th:case="1" th:src="@{/static/image/express_brand/other.png}">
+              <img th:case="2" th:src="@{/static/image/express_brand/sto.png}">
+              <img th:case="3" th:src="@{/static/image/express_brand/yt.png}">
+              <img th:case="4" th:src="@{/static/image/express_brand/zto.png}">
+              <img th:case="5" th:src="@{/static/image/express_brand/yd.png}">
+              <img th:case="6" th:src="@{/static/image/express_brand/sf.png}">
+              <img th:case="7" th:src="@{/static/image/express_brand/fw.png}">
+              <img th:case="8" th:src="@{/static/image/express_brand/ems.png}">
+              <img th:case="9" th:src="@{/static/image/express_brand/cn.png}">
+              <img th:case="10" th:src="@{/static/image/express_brand/jt.png}">
+              <img th:case="11" th:src="@{/static/image/express_brand/dp.png}">
+              <img th:case="12" th:src="@{/static/image/express_brand/dn.png}">
+              <img th:case="13" th:src="@{/static/image/express_brand/jd.png}">
+            </block>
+            <select class="expressBrandSelect">
+              <block th:each="brand:${expressBrandList}">
+                <block th:if="${hotlineLabeled.expressBrand.id} == ${brand.id}">
+                  <option th:value="${brand.id}" th:text="${brand.name}" selected></option>
+                </block>
+                <block th:if="${hotlineLabeled.expressBrand.id} != ${brand.id}">
+                  <option th:value="${brand.id}" th:text="${brand.name}"></option>
+                </block>
+              </block>
+            </select>
+          </td>
+        </block>
+        <td th:text="${hotlineLabeled.mayoralHotline.complainantCalledPhoneNumber}"></td>
+        <td th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></td>
+        <td th:text="${hotlineLabeled.mayoralHotline.appealDetail}"></td>
+        <td>
+          <b th:text="${hotlineLabeled.mayoralHotline.deadlineDateTime}"></b>
+          <br>
+          <span th:text="${hotlineLabeled.mayoralHotline.appealDateTime}"></span>
+        </td>
+        <td>
+          <select class="typeSelect">
+            <block th:each="type:${issueTypeList}">
+              <block th:if="${hotlineLabeled.issueType.id} == ${type.id}">
+                <option th:value="${type.id}" th:text="${type.name}" selected></option>
+              </block>
+              <block th:if="${hotlineLabeled.issueType.id} != ${type.id}">
+                <option th:value="${type.id}" th:text="${type.name}"></option>
+              </block>
+            </block>
+          </select>
+        </td>
+        <td>
+          <select class="conditionSelect">
+            <block th:each="condition:${issueConditionList}">
+              <block th:if="${hotlineLabeled.issueCondition.id} == ${condition.id}">
+                <option th:value="${condition.id}" th:text="${condition.name}" selected></option>
+              </block>
+              <block th:if="${hotlineLabeled.issueCondition.id} != ${condition.id}">
+                <option th:value="${condition.id}" th:text="${condition.name}"></option>
+              </block>
+            </block>
+          </select>
+        </td>
+        <input type="hidden" th:value="${hotlineLabeled.id}" class="hotlineId"/>
+      </tr>
+    </block>
+    </tbody>
+  </table>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="/static/js/mayoral_hotline.js"></script>
 </div>
 </body>
 </html>
