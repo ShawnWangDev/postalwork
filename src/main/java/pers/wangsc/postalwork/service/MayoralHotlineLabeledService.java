@@ -1,15 +1,13 @@
 package pers.wangsc.postalwork.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import pers.wangsc.postalwork.dao.MayoralHotlineLabeledDao;
 import pers.wangsc.postalwork.entity.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class MayoralHotlineLabeledService {
@@ -33,6 +31,45 @@ public class MayoralHotlineLabeledService {
         return mayoralHotlineLabeledDao.findByMayoralHotlineId(id);
     }
 
+    public List<MayoralHotlineLabeled> findAllByAppealDateTimeBetween(String startDateStr, String endDateStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate;
+        Date endDate;
+        try {
+            startDate = dateFormat.parse(startDateStr);
+            endDate = dateFormat.parse(endDateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        var result = mayoralHotlineLabeledDao.findAllByAppealDateTimeBetween(startDate, endDate);
+        return result;
+    }
+
+    public Map<String, List<MayoralHotlineLabeled>> categorizedByExpressBrand(List<MayoralHotlineLabeled> mayoralHotlineLabeledList) {
+        Map<String, List<MayoralHotlineLabeled>> map = new HashMap<>();
+        for (var labeled : mayoralHotlineLabeledList) {
+            String expressBrandName = labeled.getExpressBrand().getName();
+            if (map.containsKey(expressBrandName)) {
+                map.get(expressBrandName).add(labeled);
+            } else {
+                List<MayoralHotlineLabeled> list = new ArrayList<>();
+                list.add(labeled);
+                map.put(expressBrandName, list);
+            }
+        }
+        return map;
+    }
+
+    public Map<String, Integer> categorizedByIssueType(List<MayoralHotlineLabeled> mayoralHotlineLabeledList) {
+        Map<String, Integer> map = new HashMap<>();
+        for (var labeled : mayoralHotlineLabeledList) {
+            String issueTypeName = labeled.getIssueType().getName();
+            int count = map.containsKey(issueTypeName) ? map.get(issueTypeName) : 0;
+            map.put(issueTypeName, ++count);
+        }
+        return map;
+    }
+
     public int addMissingMayoralHotline() {
         List<MayoralHotline> mayoralHotlineList = mayoralHotlineService.findAll();
         List<Integer> hotlineLabeledHotlineIds = mayoralHotlineLabeledDao.findAllMayoralHotlineId();
@@ -41,7 +78,7 @@ public class MayoralHotlineLabeledService {
         for (MayoralHotline mayoralHotline : mayoralHotlineList) {
             if (hotlineLabeledHotlineIds.contains(mayoralHotline.getId())) {
                 hotlineLabeledHotlineIds.remove(mayoralHotline.getId());
-            }else{
+            } else {
                 MayoralHotlineLabeled labeled = new MayoralHotlineLabeled();
                 labeled.setMayoralHotline(mayoralHotline);
                 labeled.setExpressBrand(expressBrands);

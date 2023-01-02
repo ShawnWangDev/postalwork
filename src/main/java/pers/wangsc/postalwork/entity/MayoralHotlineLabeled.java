@@ -115,10 +115,10 @@ public class MayoralHotlineLabeled {
     public String toString() {
         return "MayoralHotlineLabeled{" +
                 "id=" + id +
-                ", mayoralHotline=" + mayoralHotline +
                 ", expressBrand=" + expressBrand +
                 ", issueType=" + issueType +
                 ", issueCondition=" + issueCondition +
+                ", mayoralHotline=" + mayoralHotline +
                 ", updateDateTime=" + updateDateTime +
                 ", additionalRemark='" + additionalRemark + '\'' +
                 '}';

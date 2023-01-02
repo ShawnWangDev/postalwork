@@ -11,8 +11,9 @@ import pers.wangsc.postalwork.entity.MayoralHotline;
 import pers.wangsc.postalwork.entity.MayoralHotlineLabeled;
 import pers.wangsc.postalwork.service.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/mayoral_hotline_labeled")
@@ -42,7 +43,7 @@ public class MayoralHotlineLabeledController {
     }
 
     @GetMapping("/add_missing_mayoral_hotline")
-    public ModelAndView addMissingMayoralHotlineGetMapping(){
+    public ModelAndView addMissingMayoralHotlineGetMapping() {
         return addMissingMayoralHotline();
     }
 
@@ -73,5 +74,44 @@ public class MayoralHotlineLabeledController {
         mayoralHotlineLabeledService.update(mayoralHotlineLabeled);
         ModelAndView mv = new ModelAndView("mayoral_hotline/list");
         return mv;
+    }
+
+    @GetMapping("/statistic")
+    public ModelAndView statistic() {
+        ModelAndView mv = new ModelAndView("mayoral_hotline/statistic");
+        return mv;
+    }
+
+    @PostMapping("/statistic")
+    public ModelAndView statistic(String startDate, String endDate) {
+        var labeledList = mayoralHotlineLabeledService.findAllByAppealDateTimeBetween(startDate, endDate);
+        ModelAndView statisticModelAndView = statistic();
+        statisticModelAndView.addObject("labeledListSize", labeledList.size());
+        labeledList.removeIf(labeled -> {
+            String getIssueTypeName = labeled.getIssueType().getName();
+            return getIssueTypeName.equals("快运") || getIssueTypeName.equals("无责") || getIssueTypeName.equals("待设定");
+        });
+        // express
+        var categorizedByExpressBrand = mayoralHotlineLabeledService.categorizedByExpressBrand(labeledList);
+        Map<String, Float> categorizeExpressBrandRate = new HashMap<>();
+        for (Map.Entry<String, List<MayoralHotlineLabeled>> entry : categorizedByExpressBrand.entrySet()) {
+            String key = entry.getKey();
+            categorizeExpressBrandRate.put(key, (float) entry.getValue().size() / labeledList.size());
+        }
+        Stream<Map.Entry<String, Float>> sorted = categorizeExpressBrandRate.entrySet().stream().sorted(Map.Entry.comparingByValue());
+        sorted.forEach(System.out::println);
+
+        // issueType
+        var categorizedByIssueTypeMap=mayoralHotlineLabeledService.categorizedByIssueType(labeledList);
+        Map<String, Float> issueTypeRate = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : categorizedByIssueTypeMap.entrySet()) {
+            String key = entry.getKey();
+            issueTypeRate.put(key, (float) entry.getValue() / labeledList.size());
+        }
+        Stream<Map.Entry<String, Float>> sortedIssueTypeRate = issueTypeRate.entrySet().stream().sorted(Map.Entry.comparingByValue());
+        sortedIssueTypeRate.forEach(System.out::println);
+
+        statisticModelAndView.addObject("labeledList", labeledList);
+        return statisticModelAndView;
     }
 }
