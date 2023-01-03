@@ -50,7 +50,9 @@ public class MayoralHotlineLabeledController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page") int page) {
         int addedFilesCounter = mayoralHotlineService.saveFromFiles(filesDirectory, tableLocation);
-        System.out.printf("added %d records.\n", addedFilesCounter);
+        if(addedFilesCounter>0){
+            System.out.printf("added %d records.\n", addedFilesCounter);
+        }
         List<MayoralHotlineLabeled> hotlineLabeledList = new ArrayList<>();
         Page<MayoralHotline> mayoralHotlinePage = mayoralHotlineService.findIdByOrderByDeadlineDateTimeDesc(page - 1, 100);
         for (MayoralHotline mayoralHotline : mayoralHotlinePage) {
@@ -70,10 +72,9 @@ public class MayoralHotlineLabeledController {
     }
 
     @PostMapping("/update")
-    public ModelAndView updateIssueConditionId(@RequestBody MayoralHotlineLabeled mayoralHotlineLabeled) {
+    public ModelAndView update(@RequestBody MayoralHotlineLabeled mayoralHotlineLabeled) {
         mayoralHotlineLabeledService.update(mayoralHotlineLabeled);
-        ModelAndView mv = new ModelAndView("mayoral_hotline/list");
-        return mv;
+        return list(1);
     }
 
     @GetMapping("/statistic")

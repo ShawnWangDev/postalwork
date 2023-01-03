@@ -34,7 +34,6 @@ dependencies {
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
 }
 
-
 apply plugin: 'io.spring.dependency-management'
 
 dependencyManagement {
@@ -44,4 +43,13 @@ dependencyManagement {
 }
 test {
     useJUnitPlatform()
+}
+
+jar{
+    manifest {
+        attributes(
+                'Main-Class':'pers.wangsc.postalwork.Application',
+                'Class-Path': configurations.runtimeClasspath.files.collect {"lib/$it.name"}.join(' ')
+        )
+    }
 }

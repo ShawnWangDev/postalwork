@@ -20,58 +20,86 @@
     .issue_condition_id_2{
       /*
       已通知
-      Light Gray
+      Khaki
       */
-      background-color: #d3d3d3;
+      background-color: #f0e68c;
     }
     .issue_condition_id_3{
       /*
-      已催办
-      Dark Gray
+      待核实
+      Golden Poppy
       */
-      background-color: #a9a9a9;
+      background-color: #fcc200;
     }
     .issue_condition_id_4{
       /*
       达成一致
-      Blizzard Blue
+      Iceberg
       */
-      background-color: #ace5ee;
+      background-color: #71a6d2;
     }
     .issue_condition_id_5{
       /*
       未达成一致
-      Glaucous
+      Steel Blue
       */
-      background-color: #6082b6;
+      background-color: #4682b4;
     }
     .issue_condition_id_6{
       /*
       正在处理
-      Dark Turquoise
+      Glaucous
       */
-      background-color: #00ced1;
+      background-color: #6082b6;
     }
-
+    .issue_condition_id_7{
+      /*
+      因疫情
+      Blizzard Blue
+      */
+      background-color: #ace5ee;
+    }
     .issue_condition_id_8{
       /*
       建议联系发件方
-      Pastel Orange
+      Russian Green
       */
-      background-color: #ffb347;
+      background-color: #679267;
     }
     .issue_condition_id_9{
       /*
       通知企业前已妥投
-      Yellow-green (Crayola)
+      Moss green
       */
-      background-color: #c5e384;
+      background-color: #8a9a5b;
     }
     .issue_condition_id_10{
       /*
+      !回复
       Peru
       */
       background-color: #cd853f;
+    }
+    .issue_condition_id_11{
+      /*
+      转办
+      UCLA Blue
+      */
+      background-color: #536895;
+    }
+    .issue_condition_id_12{
+      /*
+      建议联系配送方
+      Fern Green
+      */
+      background-color: #4f7942;
+    }
+    .issue_condition_id_13{
+      /*
+      无责
+      Feldgrau
+      */
+      background-color: #4d5d53;
     }
 
   </style>
@@ -89,10 +117,9 @@
       <th style="width:3%" scope="col" th:text="序号"></th>
       <th style="width:5%" scope="col" th:text="文件名"></th>
       <th style="width:5%" scope="col" th:text="品牌"></th>
-      <th style="width:5%" scope="col" th:text="手机"></th>
-      <th style="width:10%" scope="col" th:text="申诉目的"></th>
-      <th scope="col" th:text="申诉详情"></th>
-      <th style="width:10%" scope="col" th:text="办结、申诉时间"></th>
+      <th style="width:10%" scope="col" th:text="投诉人信息"></th>
+      <th scope="col" th:text="申诉内容"></th>
+      <th style="width:15%" scope="col" th:text="办结、申诉时间"></th>
       <th style="width:10%" th:text="类型"></th>
       <th style="width:5%" th:text="状态"></th>
     </tr>
@@ -119,6 +146,9 @@
               <img th:case="11" th:src="@{/static/image/express_brand/dp.png}">
               <img th:case="12" th:src="@{/static/image/express_brand/dn.png}">
               <img th:case="13" th:src="@{/static/image/express_brand/jd.png}">
+              <img th:case="14" th:src="@{/static/image/express_brand/fc.png}">
+              <img th:case="15" th:src="@{/static/image/express_brand/other.png}">
+              <img th:case="16" th:src="@{/static/image/express_brand/multiple.png}">
             </block>
             <select class="expressBrandSelect">
               <block th:each="brand:${expressBrandList}">
@@ -132,13 +162,19 @@
             </select>
           </td>
         </block>
-        <td th:text="${hotlineLabeled.mayoralHotline.complainantCalledPhoneNumber}"></td>
-        <td th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></td>
-        <td th:text="${hotlineLabeled.mayoralHotline.appealDetail}"></td>
         <td>
-          <b th:text="${hotlineLabeled.mayoralHotline.deadlineDateTime}"></b>
+          <span th:text="${hotlineLabeled.mayoralHotline.complainantName}">投诉人姓名</span>
           <br>
-          <span th:text="${hotlineLabeled.mayoralHotline.appealDateTime}"></span>
+          <span th:text="${hotlineLabeled.mayoralHotline.complainantCalledPhoneNumber}">手机号码</span>
+        </td>
+        <td>
+          <b th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></b>
+          <p th:text="${hotlineLabeled.mayoralHotline.appealDetail}"></p>
+        </td>
+        <td>
+          <b th:text="${#dates.format(hotlineLabeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+          <br>
+          <span th:text="${#dates.format(hotlineLabeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
         </td>
         <td>
           <select class="typeSelect">

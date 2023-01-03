@@ -7,9 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pers.wangsc.edocument.util.StringUtil;
 import pers.wangsc.edocument.word.Word;
-import pers.wangsc.postalwork.dao.ExpressBrandDao;
 import pers.wangsc.postalwork.dao.MayoralHotlineDao;
-import pers.wangsc.postalwork.dao.MayoralHotlineLabeledDao;
 import pers.wangsc.postalwork.entity.*;
 
 import java.io.File;
@@ -20,11 +18,11 @@ public class MayoralHotlineService {
     @Autowired
     private MayoralHotlineDao mayoralHotlineDao;
     @Autowired
-    private MayoralHotlineLabeledDao mayoralHotlineLabeledDao;
+    private MayoralHotlineLabeledService mayoralHotlineLabeledService;
     @Autowired
-    private ExpressBrandDao expressCompanyDao;
+    private ExpressBrandService expressBrandService;
 
-    public List<MayoralHotline> findAll(){
+    public List<MayoralHotline> findAll() {
         return mayoralHotlineDao.findAll();
     }
 
@@ -47,7 +45,6 @@ public class MayoralHotlineService {
 
     public int saveFromFiles(String filesDirectory, String tableLocation) {
         var fileNameDidNotAddInDB = getFileNameDidNotAddInDB(filesDirectory);
-        var expressBrandList = expressCompanyDao.findAll();
         int[] tableLocations = StringUtil.delimiterStringToNoOffsetIntArray(tableLocation);
         int addedFilesCounter = 0;
         for (String filePath : fileNameDidNotAddInDB) {
@@ -60,12 +57,8 @@ public class MayoralHotlineService {
             MayoralHotline hotline = new MayoralHotline(data);
             hotline.setCreateDateTime(new Date());
             mayoralHotlineDao.save(hotline);
-            MayoralHotlineLabeled labeled=new MayoralHotlineLabeled();
-            labeled.setMayoralHotline(hotline);
-            labeled.setExpressBrand(expressBrandList);
-            labeled.setIssueCondition(new IssueCondition(1));
-            labeled.setIssueType(new IssueType(1));
-            mayoralHotlineLabeledDao.save(new MayoralHotlineLabeled(hotline.getId()));
+            var labeled=mayoralHotlineLabeledService.setByMayoralHotline(hotline);
+            mayoralHotlineLabeledService.save(labeled);
             addedFilesCounter++;
         }
         return addedFilesCounter;

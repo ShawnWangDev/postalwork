@@ -2,6 +2,7 @@ package pers.wangsc.postalwork.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.wangsc.postalwork.dao.MayoralHotlineDao;
 import pers.wangsc.postalwork.dao.MayoralHotlineLabeledDao;
 import pers.wangsc.postalwork.entity.*;
 
@@ -16,9 +17,9 @@ public class MayoralHotlineLabeledService {
     @Autowired
     ExpressBrandService expressBrandService;
     @Autowired
-    private MayoralHotlineService mayoralHotlineService;
+    private MayoralHotlineDao mayoralHotlineDao;
 
-//    public List<MayoralHotlineLabeled> findByMayoralHotlineOrderByDeadlineDateTimeDesc(int pageNum, int pageSize) {
+    //    public List<MayoralHotlineLabeled> findByMayoralHotlineOrderByDeadlineDateTimeDesc(int pageNum, int pageSize) {
 //        List<MayoralHotlineLabeled> hotlineLabeledList = new ArrayList<>();
 //        Page<MayoralHotline> mayoralHotlinePage = mayoralHotlineService.findIdByOrderByDeadlineDateTimeDesc(pageNum, pageSize);
 //        for (MayoralHotline mayoralHotline : mayoralHotlinePage) {
@@ -26,6 +27,7 @@ public class MayoralHotlineLabeledService {
 //        }
 //        return hotlineLabeledList;
 //    }
+    private final String MULTIPLE_EXPRESS_DATABASE_VALUE = "{{多家}}";
 
     public MayoralHotlineLabeled findByMayoralHotlineId(Integer id) {
         return mayoralHotlineLabeledDao.findByMayoralHotlineId(id);
@@ -70,20 +72,27 @@ public class MayoralHotlineLabeledService {
         return map;
     }
 
+    public MayoralHotlineLabeled setByMayoralHotline(MayoralHotline hotline) {
+        var expressBrandList = expressBrandService.findAll();
+        Integer multipleExpressBrandId = expressBrandList.stream()
+                .filter(e -> e.getName().equals(MULTIPLE_EXPRESS_DATABASE_VALUE)).findAny().get().getId();
+        MayoralHotlineLabeled labeled = new MayoralHotlineLabeled();
+        labeled.setMayoralHotline(hotline);
+        labeled.setExpressBrand(expressBrandList, multipleExpressBrandId);
+        labeled.setIssueCondition(new IssueCondition(1));
+        labeled.setIssueType(new IssueType(1));
+        return labeled;
+    }
+
     public int addMissingMayoralHotline() {
-        List<MayoralHotline> mayoralHotlineList = mayoralHotlineService.findAll();
+        List<MayoralHotline> mayoralHotlineList = mayoralHotlineDao.findAll();
         List<Integer> hotlineLabeledHotlineIds = mayoralHotlineLabeledDao.findAllMayoralHotlineId();
-        List<ExpressBrand> expressBrands = expressBrandService.findAll();
         int addMissingCounter = 0;
         for (MayoralHotline mayoralHotline : mayoralHotlineList) {
             if (hotlineLabeledHotlineIds.contains(mayoralHotline.getId())) {
                 hotlineLabeledHotlineIds.remove(mayoralHotline.getId());
             } else {
-                MayoralHotlineLabeled labeled = new MayoralHotlineLabeled();
-                labeled.setMayoralHotline(mayoralHotline);
-                labeled.setExpressBrand(expressBrands);
-                labeled.setIssueCondition(new IssueCondition(1));
-                labeled.setIssueType(new IssueType(1));
+                var labeled = setByMayoralHotline(mayoralHotline);
                 mayoralHotlineLabeledDao.save(labeled);
                 addMissingCounter++;
             }
@@ -107,5 +116,9 @@ public class MayoralHotlineLabeledService {
             }
             mayoralHotlineLabeledDao.save(labeled);
         }
+    }
+
+    public void save(MayoralHotlineLabeled labeled){
+        mayoralHotlineLabeledDao.save(labeled);
     }
 }

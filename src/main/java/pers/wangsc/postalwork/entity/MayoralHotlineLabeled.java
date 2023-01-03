@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -67,15 +68,21 @@ public class MayoralHotlineLabeled {
     }
 
     @JsonIgnore
-    public void setExpressBrand(List<ExpressBrand> expressBrandList) {
+    public void setExpressBrand(List<ExpressBrand> expressBrandList, Integer multipleExpressBrandId) {
+        List<ExpressBrand> hotlineContainsExpressBrandList = new ArrayList<>();
         for (var express : expressBrandList) {
             String expressName = express.getName();
             if (mayoralHotline.getAppealDetail().contains(expressName) || mayoralHotline.getAppealPurpose().contains(expressName)) {
-                expressBrand = express;
+                hotlineContainsExpressBrandList.add(express);
             }
         }
-        if (expressBrand == null) {
-            expressBrand = new ExpressBrand(1);
+        int size = hotlineContainsExpressBrandList.size();
+        if (size < 1) {
+            setExpressBrand(new ExpressBrand(1));
+        } else if (size > 1) {
+            setExpressBrand(new ExpressBrand(multipleExpressBrandId));
+        } else {
+            setExpressBrand(new ExpressBrand(hotlineContainsExpressBrandList.get(0).getId()));
         }
     }
 

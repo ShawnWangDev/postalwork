@@ -8,7 +8,7 @@ CREATE TABLE `express_brand`(
     name VARCHAR(16)
 )charset=UTF8MB4;
 
-INSERT INTO `express_brand` (name) VALUES ("其他");
+INSERT INTO `express_brand` (name) VALUES ("{{其他}}");
 INSERT INTO `express_brand` (name) VALUES ("申通");
 INSERT INTO `express_brand` (name) VALUES ("圆通");
 INSERT INTO `express_brand` (name) VALUES ("中通");
@@ -21,6 +21,9 @@ INSERT INTO `express_brand` (name) VALUES ("极兔");
 INSERT INTO `express_brand` (name) VALUES ("德邦");
 INSERT INTO `express_brand` (name) VALUES ("丹鸟");
 INSERT INTO `express_brand` (name) VALUES ("京东");
+INSERT INTO `express_brand` (name) VALUES ("丰巢");
+INSERT INTO `express_brand` (name) VALUES ("本地");
+INSERT INTO `express_brand` (name) VALUES ("{{多家}}");
 
 DROP TABLE IF EXISTS `issue_type`;
 CREATE TABLE `issue_type`(
