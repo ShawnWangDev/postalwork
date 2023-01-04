@@ -7,7 +7,6 @@ $(".expressBrandSelect").each(function(){
             id:id,
             expressBrand:expressBrand,
         };
-        console.log(sendData);
         if(expressBrand.id!=0){
             $.ajax({
                 type: "POST",
@@ -28,14 +27,14 @@ $(".expressBrandSelect").each(function(){
 
 $(".conditionSelect").each(function(){
     $(this).change(function(){
-        let id=$(this).parents("tr").find("input").val();
+        let id=$(this).parents("tr").find("input:hidden").val();
         let issueCondition=new Object();
         issueCondition.id=$(this).val();
+        let tableTrNode=$(this).parent().parent("tr");
         let sendData={
             id:id,
             issueCondition:issueCondition,
         };
-        console.log(sendData);
         if(issueCondition.id!=0){
             $.ajax({
                 type: "POST",
@@ -44,7 +43,7 @@ $(".conditionSelect").each(function(){
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function(result) {
-                    location.reload(true);
+                    tableTrNode.attr('class','issue_condition_id_'+issueCondition.id);
                 },
                 error: function(err) {
                 console.log("update error.")
@@ -63,7 +62,6 @@ $(".typeSelect").each(function(){
             id:id,
             issueType:issueType,
         };
-        console.log(sendData);
         if(issueType.id!=0){
             $.ajax({
                 type: "POST",
@@ -72,10 +70,10 @@ $(".typeSelect").each(function(){
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function(result) {
-                    location.reload(true);
+                    // location.reload(true);
                 },
                 error: function(err) {
-                    console.log("update error.")
+                    alert("update error.")
                 }
             });
         }
