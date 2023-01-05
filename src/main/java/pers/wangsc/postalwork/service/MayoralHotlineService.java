@@ -57,8 +57,8 @@ public class MayoralHotlineService {
             MayoralHotline hotline = new MayoralHotline(data);
             hotline.setCreateDateTime(new Date());
             mayoralHotlineDao.save(hotline);
-            var labeled=mayoralHotlineLabeledService.setByMayoralHotline(hotline);
-            mayoralHotlineLabeledService.save(labeled);
+//            var labeled=mayoralHotlineLabeledService.setByMayoralHotline(hotline);
+//            mayoralHotlineLabeledService.save(labeled);
             addedFilesCounter++;
         }
         return addedFilesCounter;

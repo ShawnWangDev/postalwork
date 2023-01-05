@@ -48,16 +48,16 @@
     .issue_condition_id_6{
       /*
       正在处理
-      Glaucous
+      Vivid lime green
       */
-      background-color: #6082b6;
+      background-color: #a6d608;
     }
     .issue_condition_id_7{
       /*
       因疫情
-      Blizzard Blue
+      Sacramento State Green
       */
-      background-color: #ace5ee;
+      background-color: #00563f;
     }
     .issue_condition_id_8{
       /*
@@ -100,6 +100,13 @@
       Feldgrau
       */
       background-color: #4d5d53;
+    }
+    .issue_condition_id_14{
+      /*
+      已撤单
+      British Racing Green
+      */
+      background-color: #004225;
     }
 
   </style>
@@ -170,6 +177,8 @@
         <td>
           <b th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></b>
           <p th:text="${hotlineLabeled.mayoralHotline.appealDetail}"></p>
+          <br>
+          <i th:text="${hotlineLabeled.mayoralHotline.remark}"></i>
         </td>
         <td>
           <b th:text="${#dates.format(hotlineLabeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>

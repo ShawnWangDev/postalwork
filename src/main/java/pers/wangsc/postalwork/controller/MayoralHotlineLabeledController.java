@@ -36,6 +36,7 @@ public class MayoralHotlineLabeledController {
 
     @PostMapping("/add_missing_mayoral_hotline")
     public ModelAndView addMissingMayoralHotline() {
+        mayoralHotlineService.saveFromFiles(filesDirectory, tableLocation);
         int addMissingMayoralHotlineAmount = mayoralHotlineLabeledService.addMissingMayoralHotline();
         ModelAndView mvList = list(1);
         mvList.addObject("addMissingMayoralHotlineAmount", addMissingMayoralHotlineAmount);
@@ -64,7 +65,7 @@ public class MayoralHotlineLabeledController {
         ModelAndView mv = new ModelAndView("mayoral_hotline/list");
         mv.addObject("hotlineLabeledList", hotlineLabeledList);
         mv.addObject("totalPage", mayoralHotlinePage.getTotalPages());
-        mv.addObject("addedFilesCounter", addedFilesCounter);
+//        mv.addObject("addedFilesCounter", addedFilesCounter);
         mv.addObject("expressBrandList", expressBrandService.findAll());
         mv.addObject("issueConditionList", issueConditionService.findAll());
         mv.addObject("issueTypeList", issueTypeService.findAll());

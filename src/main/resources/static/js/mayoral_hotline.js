@@ -1,12 +1,40 @@
+var expressBrandImages = [
+    { id: 1, name: 'other' },
+    { id: 2, name: 'STO' },
+    { id: 3, name: 'YT' },
+    { id: 4, name: 'ZTO' },
+    { id: 5, name: 'YunDa' },
+    { id: 6, name: 'SF' },
+    { id: 7, name: 'FengWang' },
+    { id: 8, name: 'EMS' },
+    { id: 9, name: 'CaiNiao' },
+    { id: 10, name: 'JiTu' },
+    { id: 11, name: 'Deppon' },
+    { id: 12, name: 'DanNiao' },
+    { id: 13, name: 'JD' },
+    { id: 14, name: 'HiveBox' },
+    { id: 15, name: 'other' },
+    { id: 16, name: 'multiple' },
+]
+
+function getExpressBrandImagePath(id) {
+    let expressBrandName = expressBrandImages.filter(ele => ele.id == id)[0].name;
+    let path = "/static/image/express_brand/";
+    let imageExtension = '.jpg';
+    return path + expressBrandName + imageExtension;
+}
+
 $(".expressBrandSelect").each(function(){
     $(this).change(function(){
         let id=$(this).parents("tr").find("input").val();
+        let expressBrandId=$(this).val();
         let expressBrand=new Object();
-        expressBrand.id=$(this).val();
+        expressBrand.id=expressBrandId;
         let sendData={
             id:id,
             expressBrand:expressBrand,
         };
+        let image=$(this).parents('td').find('img');
         if(expressBrand.id!=0){
             $.ajax({
                 type: "POST",
@@ -15,7 +43,8 @@ $(".expressBrandSelect").each(function(){
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function(result) {
-                    location.reload(true);
+                    image.attr('src',getExpressBrandImagePath(expressBrandId));
+//                    location.reload(true);
                 },
                 error: function(err) {
                     console.log("update error.")
