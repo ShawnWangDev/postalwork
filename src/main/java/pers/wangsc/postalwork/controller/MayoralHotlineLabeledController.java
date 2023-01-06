@@ -1,5 +1,7 @@
 package pers.wangsc.postalwork.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pers.wangsc.postalwork.entity.MayoralHotline;
 import pers.wangsc.postalwork.entity.MayoralHotlineLabeled;
 import pers.wangsc.postalwork.service.*;
+import pers.wangsc.postalwork.util.mayoralhotlinelabeled.Analysis;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,7 +54,7 @@ public class MayoralHotlineLabeledController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page") int page) {
         int addedFilesCounter = mayoralHotlineService.saveFromFiles(filesDirectory, tableLocation);
-        if(addedFilesCounter>0){
+        if (addedFilesCounter > 0) {
             System.out.printf("added %d records.\n", addedFilesCounter);
         }
         List<MayoralHotlineLabeled> hotlineLabeledList = new ArrayList<>();
@@ -84,36 +87,42 @@ public class MayoralHotlineLabeledController {
         return mv;
     }
 
-    @PostMapping("/statistic")
-    public ModelAndView statistic(String startDate, String endDate) {
-        var labeledList = mayoralHotlineLabeledService.findAllByAppealDateTimeBetween(startDate, endDate);
-        ModelAndView statisticModelAndView = statistic();
-        statisticModelAndView.addObject("labeledListSize", labeledList.size());
-        labeledList.removeIf(labeled -> {
-            String getIssueTypeName = labeled.getIssueType().getName();
-            return getIssueTypeName.equals("快运") || getIssueTypeName.equals("无责") || getIssueTypeName.equals("待设定");
-        });
-        // express
-        var categorizedByExpressBrand = mayoralHotlineLabeledService.categorizedByExpressBrand(labeledList);
-        Map<String, Float> categorizeExpressBrandRate = new HashMap<>();
-        for (Map.Entry<String, List<MayoralHotlineLabeled>> entry : categorizedByExpressBrand.entrySet()) {
-            String key = entry.getKey();
-            categorizeExpressBrandRate.put(key, (float) entry.getValue().size() / labeledList.size());
-        }
-        Stream<Map.Entry<String, Float>> sorted = categorizeExpressBrandRate.entrySet().stream().sorted(Map.Entry.comparingByValue());
-        sorted.forEach(System.out::println);
+    @GetMapping("/statistic_strategy")
+    public ModelAndView statisticStrategy() {
+        ModelAndView mv = new ModelAndView("mayoral_hotline/statistic_strategy");
+        return mv;
+    }
 
-        // issueType
-        var categorizedByIssueTypeMap=mayoralHotlineLabeledService.categorizedByIssueType(labeledList);
-        Map<String, Float> issueTypeRate = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : categorizedByIssueTypeMap.entrySet()) {
-            String key = entry.getKey();
-            issueTypeRate.put(key, (float) entry.getValue() / labeledList.size());
-        }
-        Stream<Map.Entry<String, Float>> sortedIssueTypeRate = issueTypeRate.entrySet().stream().sorted(Map.Entry.comparingByValue());
-        sortedIssueTypeRate.forEach(System.out::println);
+    @GetMapping("/statistic_strategy_preview")
+    public ModelAndView statisticStrategyPreview(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        var strategy = mayoralHotlineLabeledService.getStatisticStrategy(startDate, endDate);
+        var view = statisticStrategy();
+        view.addObject("validList", strategy.getValidList());
+        view.addObject("unsetList", strategy.getUnsetList());
+        view.addObject("invalidList", strategy.getInvalidList());
+        view.addObject("paramStartDate", startDate);
+        view.addObject("paramEndDate", endDate);
+        return view;
+    }
 
-        statisticModelAndView.addObject("labeledList", labeledList);
-        return statisticModelAndView;
+    @GetMapping("/show_analysis")
+    public ModelAndView showAnalysis(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        ModelAndView mv = new ModelAndView("mayoral_hotline/analysis");
+        var strategy = mayoralHotlineLabeledService.getStatisticStrategy(startDate, endDate);
+        List<MayoralHotlineLabeled> list = new ArrayList<>();
+        list.addAll(strategy.getUnsetList());
+        list.addAll(strategy.getValidList());
+        Analysis analysis = new Analysis().build(list);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mv.addObject("expressBrandMapEntryListJson", mapper.writeValueAsString(analysis.getExpressBrandMapEntryList()));
+            mv.addObject("issueTypeMapEntryListJson", mapper.writeValueAsString(analysis.getIssueTypeMapEntryList()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        mv.addObject("expressBrandMap", analysis.getExpressBrandMap());
+        mv.addObject("issueTypeMap", analysis.getIssueTypeMap());
+        mv.addObject("invalidList", strategy.getInvalidList());
+        return mv;
     }
 }

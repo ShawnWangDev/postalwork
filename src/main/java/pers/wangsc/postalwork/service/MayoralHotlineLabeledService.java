@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pers.wangsc.postalwork.dao.MayoralHotlineDao;
 import pers.wangsc.postalwork.dao.MayoralHotlineLabeledDao;
 import pers.wangsc.postalwork.entity.*;
+import pers.wangsc.postalwork.util.mayoralhotlinelabeled.StatisticStrategy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,20 +32,6 @@ public class MayoralHotlineLabeledService {
 
     public MayoralHotlineLabeled findByMayoralHotlineId(Integer id) {
         return mayoralHotlineLabeledDao.findByMayoralHotlineId(id);
-    }
-
-    public List<MayoralHotlineLabeled> findAllByAppealDateTimeBetween(String startDateStr, String endDateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate;
-        Date endDate;
-        try {
-            startDate = dateFormat.parse(startDateStr);
-            endDate = dateFormat.parse(endDateStr);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        var result = mayoralHotlineLabeledDao.findAllByAppealDateTimeBetween(startDate, endDate);
-        return result;
     }
 
     public Map<String, List<MayoralHotlineLabeled>> categorizedByExpressBrand(List<MayoralHotlineLabeled> mayoralHotlineLabeledList) {
@@ -120,5 +107,23 @@ public class MayoralHotlineLabeledService {
 
     public void save(MayoralHotlineLabeled labeled){
         mayoralHotlineLabeledDao.save(labeled);
+    }
+
+    public List<MayoralHotlineLabeled> findAllByAppealDateTimeBetween(Date startDate, Date endDate) {
+        return mayoralHotlineLabeledDao.findAllByAppealDateTimeBetween(startDate, endDate);
+    }
+    public StatisticStrategy getStatisticStrategy(String startDateStr, String endDateStr){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate;
+        Date endDate;
+        try {
+            startDate = dateFormat.parse(startDateStr);
+            endDate = dateFormat.parse(endDateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        var labeledList = findAllByAppealDateTimeBetween(startDate, endDate);
+        StatisticStrategy strategy=new StatisticStrategy(labeledList);
+        return strategy;
     }
 }

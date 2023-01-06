@@ -1,0 +1,206 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <block th:if="${expressBrandMap}">
+    <h1>快递企业情况</h1>
+    <div id="expressBrandBar" style="width: 950px;height:400px;"></div>
+    <div th:each="map:${expressBrandMap}">
+      <h2 th:text="${map.key}"></h2>
+      <table class="table" style="font-size:15px;">
+        <thead>
+        <tr>
+          <th style="width:5%">序号</th>
+          <th style="width:10%">编号</th>
+          <th style="width:10%">投诉类型</th>
+          <th>投诉内容</th>
+          <th style="width:12%">交办日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="val,state:${map.value}">
+          <td th:text="${state.index+1}"></td>
+          <td th:text="${#strings.substring(val.mayoralHotline.fileName, 4, 18)}"></td>
+          <td th:text="${val.issueType.name}"></td>
+          <td>
+            <b th:Text="${val.mayoralHotline.appealPurpose}"></b>
+            <p th:Text="${val.mayoralHotline.appealDetail}"></p>
+          </td>
+          <td th:text="${#dates.format(val.mayoralHotline.appealDateTime,'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </block>
+  <block th:if="${issueTypeMap}" style="display: block;page-break-before: always;">
+    <br><br>
+    <h1>投诉类型情况</h1>
+    <div id="issueTypeBar" style="width: 950px;height:450px;"></div>
+    <div th:each="map:${issueTypeMap}">
+      <h2 th:text="${map.key}"></h2>
+      <table class="table" style="font-size:15px;">
+        <thead>
+          <tr>
+            <th style="width:5%">序号</th>
+            <th style="width:10%">编号</th>
+            <th style="width:8%">快递企业</th>
+            <th>投诉内容</th>
+            <th style="width:12%">交办日期</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr th:each="val,state:${map.value}">
+          <td th:text="${state.index+1}"></td>
+          <td th:text="${#strings.substring(val.mayoralHotline.fileName, 4, 18)}"></td>
+          <td th:text="${val.expressBrand.name}"></td>
+          <td>
+            <b th:Text="${val.mayoralHotline.appealPurpose}"></b>
+            <p th:Text="${val.mayoralHotline.appealDetail}"></p>
+          </td>
+          <td th:text="${#dates.format(val.mayoralHotline.appealDateTime,'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </block>
+
+  <block th:if="${invalidList}" style="display: block;page-break-before: always;">
+    <br><br>
+    <h1>判定企业无责</h1>
+    <table class="table" style="font-size:15px;">
+      <thead>
+      <tr>
+        <th style="width:5%">序号</th>
+        <th style="width:10%">编号</th>
+        <th style="width:8%">快递企业</th>
+        <th>投诉内容</th>
+        <th style="width:12%">交办日期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="labeled,state:${invalidList}">
+        <td th:text="${state.index+1}"></td>
+        <td th:text="${#strings.substring(labeled.mayoralHotline.fileName, 4, 18)}"></td>
+        <td th:text="${labeled.expressBrand.name}"></td>
+        <td>
+          <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
+          <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+        <td th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yyyy-MM-dd')}"></td>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </block>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
+  <script th:inline="javascript">
+    let jsonData=JSON.parse([[${expressBrandMapEntryListJson}]]);
+    let expressBrandNameArray=new Array();
+    let expressBrandIssueAmountArray=new Array();
+    for(let i in jsonData){
+      for(let key in jsonData[i]){
+        expressBrandNameArray.push(key);
+        expressBrandIssueAmountArray.push(jsonData[i][key].length);
+      }
+    }
+    var expressBrandBar = echarts.init(document.getElementById("expressBrandBar"));
+    expressBrandBarOption = {
+      title: {
+        text: '各企业投诉量',
+        left:'center',
+        textStyle:{
+          color:'#000',
+          // 'normal','italic','oblique'
+          fontStyle:'normal',
+          // 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+          fontWeight:'bold',
+          fontFamily:'sans-serif',
+  　　　　 fontSize: '20'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: expressBrandNameArray,
+        axisLabel: {
+            textStyle: {
+              color: "#000",
+              fontSize: "20",
+            },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+            textStyle: {
+              color: "#000",
+              fontSize: "20",
+            },
+        },
+      },
+      series: [
+        {
+          data: expressBrandIssueAmountArray,
+          type: 'bar',
+
+        }
+      ]
+    };
+    expressBrandBar.setOption(expressBrandBarOption);
+
+
+    let issueTypeJsonData=JSON.parse([[${issueTypeMapEntryListJson}]]);
+    let issueTypeNameArray=new Array();
+    let issueTypeAmountArray=new Array();
+    for(let i in issueTypeJsonData){
+      for(let key in issueTypeJsonData[i]){
+        issueTypeNameArray.push(key);
+        issueTypeAmountArray.push(issueTypeJsonData[i][key].length);
+      }
+    }
+    var issueTypeBar = echarts.init(document.getElementById("issueTypeBar"));
+    issueTypeBarOption = {
+      title: {
+        text: '投诉类型的数量',
+        left:'center',
+        textStyle:{
+          color:'#000',
+          // 'normal','italic','oblique'
+          fontStyle:'normal',
+          // 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+          fontWeight:'bold',
+          fontFamily:'sans-serif',
+  　　　　 fontSize: '20'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: issueTypeNameArray,
+        axisLabel: {
+            textStyle: {
+              color: "#000",
+              fontSize: "16",
+            },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+            textStyle: {
+              color: "#000",
+              fontSize: "16",
+            },
+        },
+      },
+      series: [
+        {
+          data: issueTypeAmountArray,
+          type: 'bar'
+        }
+      ]
+    };
+    issueTypeBar.setOption(issueTypeBarOption);
+
+  </script>
+</div>
+</body>
+</html>

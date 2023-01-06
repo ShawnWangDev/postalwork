@@ -1,0 +1,160 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <div class="row">
+    <div class="col">
+      <form action="/mayoral_hotline_labeled/statistic_strategy_preview" method="get">
+        <input type="text" name="startDate" th:value="${paramStartDate}"/>
+        <br>
+        <input type="text" name="endDate" th:value="${paramEndDate}"/>
+        <br>
+        <input type="submit" value="查询！"/>
+      </form>
+    </div>
+    <div class="col">
+      <form action="/mayoral_hotline_labeled/show_analysis" method="get">
+        <input type="text" name="startDate" th:value="${paramStartDate}"/>
+        <br>
+        <input type="text" name="endDate" th:value="${paramEndDate}"/>
+        <br>
+        <input type="submit" value="统计！"/>
+      </form>
+    </div>
+  </div>
+  <block th:if="${unsetList}">
+    <h1>UNSET</h1>
+    <table class="table">
+    <thead>
+    <tr>
+      <th>序号</th>
+      <th>文件名</th>
+      <th>品牌</th>
+      <th>投诉人信息</th>
+      <th style="width:40%">申诉内容</th>
+      <th>办结、申诉时间</th>
+      <th>类型</th>
+      <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="labeled,state:${unsetList}">
+      <td th:text="${state.index+1}"></td>
+      <td th:text="${labeled.mayoralHotline.fileName}"></td>
+      <td th:text="${labeled.expressBrand.name}"></td>
+      <td>
+        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <br>
+        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
+      </td>
+      <td>
+        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+      </td>
+      <td>
+        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <br>
+        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+      </td>
+      <td>
+        <p th:text="${labeled.issueType.name}"></p>
+      </td>
+      <td>
+        <p th:text="${labeled.issueCondition.name}"></p>
+      </td>
+    </tr>
+    </tbody>
+    </table>
+  </block>
+
+  <block th:if="${invalidList}">
+    <h1>INVALID</h1>
+    <table class="table">
+    <thead>
+    <tr>
+      <th>序号</th>
+      <th>文件名</th>
+      <th>品牌</th>
+      <th>投诉人信息</th>
+      <th style="width:40%">申诉内容</th>
+      <th>办结、申诉时间</th>
+      <th>类型</th>
+      <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="labeled,state:${invalidList}">
+      <td th:text="${state.index+1}"></td>
+      <td th:text="${labeled.mayoralHotline.fileName}"></td>
+      <td th:text="${labeled.expressBrand.name}"></td>
+      <td>
+        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <br>
+        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
+      </td>
+      <td>
+        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+      </td>
+      <td>
+        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <br>
+        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+      </td>
+      <td>
+        <p th:text="${labeled.issueType.name}"></p>
+      </td>
+      <td>
+        <p th:text="${labeled.issueCondition.name}"></p>
+      </td>
+    </tr>
+    </tbody>
+    </table>
+  </block>
+  <block th:if="${validList}">
+  <h1>VALID</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>序号</th>
+      <th>文件名</th>
+      <th>品牌</th>
+      <th>投诉人信息</th>
+      <th style="width:40%">申诉内容</th>
+      <th>办结、申诉时间</th>
+      <th>类型</th>
+      <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="labeled,state:${validList}">
+      <td th:text="${state.index+1}"></td>
+      <td th:text="${labeled.mayoralHotline.fileName}"></td>
+      <td th:text="${labeled.expressBrand.name}"></td>
+      <td>
+        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <br>
+        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
+      </td>=
+      <td>
+        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+      </td>
+      <td>
+        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <br>
+        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+      </td>
+      <td>
+        <p th:text="${labeled.issueType.name}"></p>
+      </td>
+      <td>
+        <p th:text="${labeled.issueCondition.name}"></p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  </block>
+</div>
+</body>
+</html>
