@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class MayoralHotlineLabeled {
+public class MayoralHotlineIssue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -30,10 +30,10 @@ public class MayoralHotlineLabeled {
     @Column(length = 1024)
     private String additionalRemark;
 
-    public MayoralHotlineLabeled() {
+    public MayoralHotlineIssue() {
     }
 
-    public MayoralHotlineLabeled(Integer hotlineId) {
+    public MayoralHotlineIssue(Integer hotlineId) {
         mayoralHotline = new MayoralHotline();
         mayoralHotline.setId(hotlineId);
         setMayoralHotline(mayoralHotline);
@@ -120,7 +120,7 @@ public class MayoralHotlineLabeled {
 
     @Override
     public String toString() {
-        return "MayoralHotlineLabeled{" +
+        return "MayoralHotlineIssue{" +
                 "id=" + id +
                 ", expressBrand=" + expressBrand +
                 ", issueType=" + issueType +

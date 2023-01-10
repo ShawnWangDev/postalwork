@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
 <body>
 <div th:fragment="content">
-  <form action="/mayoral_hotline_labeled/statistic" method="post">
+  <form action="/mayoral_hotline_issue/statistic" method="post">
     <input type="text" name="startDate"/>
     <br>
     <input type="text" name="endDate"/>
     <br>
     <input type="submit" value="查询"/>
   </form>
-  <block th:if="${labeledList}">
-    <div th:each="labeled:${labeledList}">
-      <span th:text="${labeled.mayoralHotline.appealDateTime}"></span>
+  <block th:if="${issueList}">
+    <div th:each="issue:${issueList}">
+      <span th:text="${issue.mayoralHotline.appealDateTime}"></span>
     </div>
   </block>
 </div>

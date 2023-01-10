@@ -4,7 +4,7 @@
 <div th:fragment="content">
   <div class="row">
     <div class="col">
-      <form action="/mayoral_hotline_labeled/statistic_strategy_preview" method="get">
+      <form action="/mayoral_hotline_issue/statistic_strategy_preview" method="get">
         <input type="text" name="startDate" th:value="${paramStartDate}"/>
         <br>
         <input type="text" name="endDate" th:value="${paramEndDate}"/>
@@ -13,7 +13,7 @@
       </form>
     </div>
     <div class="col">
-      <form action="/mayoral_hotline_labeled/show_analysis" method="get">
+      <form action="/mayoral_hotline_issue/show_analysis" method="get">
         <input type="text" name="startDate" th:value="${paramStartDate}"/>
         <br>
         <input type="text" name="endDate" th:value="${paramEndDate}"/>
@@ -38,29 +38,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="labeled,state:${unsetList}">
+    <tr th:each="issue,state:${unsetList}">
       <td th:text="${state.index+1}"></td>
-      <td th:text="${labeled.mayoralHotline.fileName}"></td>
-      <td th:text="${labeled.expressBrand.name}"></td>
+      <td th:text="${issue.mayoralHotline.fileName}"></td>
+      <td th:text="${issue.expressBrand.name}"></td>
       <td>
-        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <span th:text="${issue.mayoralHotline.complainantName}"></span>
         <br>
-        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
+        <span th:text="${issue.mayoralHotline.complainantCalledPhoneNumber}"></span>
       </td>
       <td>
-        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
-        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+        <b th:text="${issue.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${issue.mayoralHotline.appealDetail}"></p>
       </td>
       <td>
-        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <b th:text="${#dates.format(issue.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
         <br>
-        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+        <span th:text="${#dates.format(issue.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
       </td>
       <td>
-        <p th:text="${labeled.issueType.name}"></p>
+        <p th:text="${issue.issueType.name}"></p>
       </td>
       <td>
-        <p th:text="${labeled.issueCondition.name}"></p>
+        <p th:text="${issue.issueCondition.name}"></p>
       </td>
     </tr>
     </tbody>
@@ -83,29 +83,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="labeled,state:${invalidList}">
+    <tr th:each="issue,state:${invalidList}">
       <td th:text="${state.index+1}"></td>
-      <td th:text="${labeled.mayoralHotline.fileName}"></td>
-      <td th:text="${labeled.expressBrand.name}"></td>
+      <td th:text="${issue.mayoralHotline.fileName}"></td>
+      <td th:text="${issue.expressBrand.name}"></td>
       <td>
-        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <span th:text="${issue.mayoralHotline.complainantName}"></span>
         <br>
-        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
+        <span th:text="${issue.mayoralHotline.complainantCalledPhoneNumber}"></span>
       </td>
       <td>
-        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
-        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+        <b th:text="${issue.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${issue.mayoralHotline.appealDetail}"></p>
       </td>
       <td>
-        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <b th:text="${#dates.format(issue.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
         <br>
-        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+        <span th:text="${#dates.format(issue.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
       </td>
       <td>
-        <p th:text="${labeled.issueType.name}"></p>
+        <p th:text="${issue.issueType.name}"></p>
       </td>
       <td>
-        <p th:text="${labeled.issueCondition.name}"></p>
+        <p th:text="${issue.issueCondition.name}"></p>
       </td>
     </tr>
     </tbody>
@@ -127,29 +127,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="labeled,state:${validList}">
+    <tr th:each="issue,state:${validList}">
       <td th:text="${state.index+1}"></td>
-      <td th:text="${labeled.mayoralHotline.fileName}"></td>
-      <td th:text="${labeled.expressBrand.name}"></td>
+      <td th:text="${issue.mayoralHotline.fileName}"></td>
+      <td th:text="${issue.expressBrand.name}"></td>
       <td>
-        <span th:text="${labeled.mayoralHotline.complainantName}"></span>
+        <span th:text="${issue.mayoralHotline.complainantName}"></span>
         <br>
-        <span th:text="${labeled.mayoralHotline.complainantCalledPhoneNumber}"></span>
-      </td>=
-      <td>
-        <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
-        <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
+        <span th:text="${issue.mayoralHotline.complainantCalledPhoneNumber}"></span>
       </td>
       <td>
-        <b th:text="${#dates.format(labeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
+        <b th:text="${issue.mayoralHotline.appealPurpose}"></b>
+        <p th:text="${issue.mayoralHotline.appealDetail}"></p>
+      </td>
+      <td>
+        <b th:text="${#dates.format(issue.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
         <br>
-        <span th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+        <span th:text="${#dates.format(issue.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
       </td>
       <td>
-        <p th:text="${labeled.issueType.name}"></p>
+        <p th:text="${issue.issueType.name}"></p>
       </td>
       <td>
-        <p th:text="${labeled.issueCondition.name}"></p>
+        <p th:text="${issue.issueCondition.name}"></p>
       </td>
     </tr>
     </tbody>

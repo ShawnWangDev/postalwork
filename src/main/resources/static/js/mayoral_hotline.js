@@ -39,7 +39,7 @@ $(".expressBrandSelect").each(function () {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "/mayoral_hotline_labeled/update",
+                url: "/mayoral_hotline_issue/update",
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function (result) {
@@ -68,7 +68,7 @@ $(".conditionSelect").each(function () {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "/mayoral_hotline_labeled/update",
+                url: "/mayoral_hotline_issue/update",
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function (result) {
@@ -95,7 +95,7 @@ $(".typeSelect").each(function () {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "/mayoral_hotline_labeled/update",
+                url: "/mayoral_hotline_issue/update",
                 data: JSON.stringify(sendData),
                 cache: false,
                 success: function (result) {

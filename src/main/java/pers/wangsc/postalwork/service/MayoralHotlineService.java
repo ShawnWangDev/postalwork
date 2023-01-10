@@ -18,8 +18,6 @@ public class MayoralHotlineService {
     @Autowired
     private MayoralHotlineDao mayoralHotlineDao;
     @Autowired
-    private MayoralHotlineLabeledService mayoralHotlineLabeledService;
-    @Autowired
     private ExpressBrandService expressBrandService;
 
     public List<MayoralHotline> findAll() {

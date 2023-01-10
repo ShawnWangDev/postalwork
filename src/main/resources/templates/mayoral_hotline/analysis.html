@@ -36,7 +36,7 @@
   <block th:if="${issueTypeMap}" style="display: block;page-break-before: always;">
     <br><br>
     <h1>投诉类型情况</h1>
-    <div id="issueTypeBar" style="width: 950px;height:450px;"></div>
+    <div id="issueTypeBar" style="width: 1060px;height:450px;"></div>
     <div th:each="map:${issueTypeMap}">
       <h2 th:text="${map.key}"></h2>
       <table class="table" style="font-size:15px;">
@@ -79,14 +79,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="labeled,state:${invalidList}">
+      <tr th:each="issue,state:${invalidList}">
         <td th:text="${state.index+1}"></td>
-        <td th:text="${#strings.substring(labeled.mayoralHotline.fileName, 4, 18)}"></td>
-        <td th:text="${labeled.expressBrand.name}"></td>
+        <td th:text="${#strings.substring(issue.mayoralHotline.fileName, 4, 18)}"></td>
+        <td th:text="${issue.expressBrand.name}"></td>
         <td>
-          <b th:text="${labeled.mayoralHotline.appealPurpose}"></b>
-          <p th:text="${labeled.mayoralHotline.appealDetail}"></p>
-        <td th:text="${#dates.format(labeled.mayoralHotline.appealDateTime,'yyyy-MM-dd')}"></td>
+          <b th:text="${issue.mayoralHotline.appealPurpose}"></b>
+          <p th:text="${issue.mayoralHotline.appealDetail}"></p>
+        <td th:text="${#dates.format(issue.mayoralHotline.appealDateTime,'yyyy-MM-dd')}"></td>
         </td>
       </tr>
       </tbody>
