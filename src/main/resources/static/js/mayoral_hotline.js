@@ -24,29 +24,29 @@ function getExpressBrandImagePath(id) {
     return path + expressBrandName + imageExtension;
 }
 
-$(".expressBrandSelect").each(function(){
-    $(this).change(function(){
-        let id=$(this).parents("tr").find("input").val();
-        let expressBrandId=$(this).val();
-        let expressBrand=new Object();
-        expressBrand.id=expressBrandId;
-        let sendData={
-            id:id,
-            expressBrand:expressBrand,
+$(".expressBrandSelect").each(function () {
+    $(this).change(function () {
+        let id = $(this).parents("tr").find("input").val();
+        let expressBrandId = $(this).val();
+        let expressBrand = new Object();
+        expressBrand.id = expressBrandId;
+        let sendData = {
+            id: id,
+            expressBrand: expressBrand,
         };
-        let image=$(this).parents('td').find('img');
-        if(expressBrand.id!=0){
+        let image = $(this).parents('td').find('img');
+        if (expressBrand.id != 0) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "/mayoral_hotline_labeled/update",
                 data: JSON.stringify(sendData),
                 cache: false,
-                success: function(result) {
-                    image.attr('src',getExpressBrandImagePath(expressBrandId));
-//                    location.reload(true);
+                success: function (result) {
+                    image.attr('src', getExpressBrandImagePath(expressBrandId));
+                    //                    location.reload(true);
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log("update error.")
                 }
             });
@@ -54,57 +54,76 @@ $(".expressBrandSelect").each(function(){
     });
 });
 
-$(".conditionSelect").each(function(){
-    $(this).change(function(){
-        let id=$(this).parents("tr").find("input:hidden").val();
-        let issueCondition=new Object();
-        issueCondition.id=$(this).val();
-        let tableTrNode=$(this).parent().parent("tr");
-        let sendData={
-            id:id,
-            issueCondition:issueCondition,
+$(".conditionSelect").each(function () {
+    $(this).change(function () {
+        let id = $(this).parents("tr").find("input:hidden").val();
+        let issueCondition = new Object();
+        issueCondition.id = $(this).val();
+        let tableTrNode = $(this).parent().parent("tr");
+        let sendData = {
+            id: id,
+            issueCondition: issueCondition,
         };
-        if(issueCondition.id!=0){
+        if (issueCondition.id != 0) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "/mayoral_hotline_labeled/update",
                 data: JSON.stringify(sendData),
                 cache: false,
-                success: function(result) {
-                    tableTrNode.attr('class','issue_condition_id_'+issueCondition.id);
+                success: function (result) {
+                    tableTrNode.attr('class', 'issue_condition_id_' + issueCondition.id);
                 },
-                error: function(err) {
-                console.log("update error.")
+                error: function (err) {
+                    console.log("update error.")
                 }
             });
         }
     });
 });
 
-$(".typeSelect").each(function(){
-    $(this).change(function(){
-        let id=$(this).parents("tr").find("input").val();
-        let issueType=new Object();
-        issueType.id=$(this).val();
-        let sendData={
-            id:id,
-            issueType:issueType,
+$(".typeSelect").each(function () {
+    $(this).change(function () {
+        let id = $(this).parents("tr").find("input").val();
+        let issueType = new Object();
+        issueType.id = $(this).val();
+        let sendData = {
+            id: id,
+            issueType: issueType,
         };
-        if(issueType.id!=0){
+        if (issueType.id != 0) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "/mayoral_hotline_labeled/update",
                 data: JSON.stringify(sendData),
                 cache: false,
-                success: function(result) {
+                success: function (result) {
                     // location.reload(true);
                 },
-                error: function(err) {
+                error: function (err) {
                     alert("update error.")
                 }
             });
         }
+    });
+});
+
+$(".codeAndAppealPurposeCopyToClipboardBtn").each(function () {
+    $(this).click(function () {
+        let textForCopy = $(this).siblings('span')[0].innerText;
+        navigator.clipboard.writeText(textForCopy);
+    });
+});
+
+$(".hotlineDetailCopyToClipboardBtn").each(function () {
+    $(this).click(function () {
+        let spans = $(this).siblings('span');
+        let textForCopy = "\n";
+        for (let span of spans) {
+            let text = span.innerText + "\n";
+            textForCopy += text;
+        }
+        navigator.clipboard.writeText(textForCopy);
     });
 });

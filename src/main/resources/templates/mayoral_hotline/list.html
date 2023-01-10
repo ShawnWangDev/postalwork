@@ -122,11 +122,9 @@
     <thead>
     <tr>
       <th style="width:3%" scope="col" th:text="序号"></th>
-      <th style="width:5%" scope="col" th:text="文件名"></th>
+      <th style="width:5%" scope="col" th:text="编号与标题"></th>
       <th style="width:5%" scope="col" th:text="品牌"></th>
-      <th style="width:10%" scope="col" th:text="投诉人信息"></th>
-      <th scope="col" th:text="申诉内容"></th>
-      <th style="width:15%" scope="col" th:text="办结、申诉时间"></th>
+      <th scope="col" th:text="投诉信息"></th>
       <th style="width:10%" th:text="类型"></th>
       <th style="width:5%" th:text="状态"></th>
     </tr>
@@ -136,7 +134,12 @@
       <tr th:each="hotlineLabeled,hotlineState:${hotlineLabeledList}"
           th:class="${'issue_condition_id_'+hotlineLabeled.issueCondition.id}">
         <td th:text="${hotlineState.index+1}"></td>
-        <td th:text="${hotlineLabeled.mayoralHotline.fileName}"></td>
+        <td>
+          <span class="codeAndAppealPurposeCopyToClipboardBtn"
+                th:text="|${#strings.substring(hotlineLabeled.mayoralHotline.fileName, 4, 18)}-${hotlineLabeled.mayoralHotline.appealPurpose}|"></span>
+          <br>
+          <button class="btn btn-outline-primary btn-sm codeAndAppealPurposeCopyToClipboardBtn">复制到剪切板</button>
+        </td>
         <block th:if="${hotlineLabeled.expressBrand}">
           <td>
             <block th:switch="${hotlineLabeled.expressBrand.id}">
@@ -170,19 +173,25 @@
           </td>
         </block>
         <td>
+          <span th:text="|【编号】 ${#strings.substring(hotlineLabeled.mayoralHotline.fileName, 4, 18)}|"></span>
+          <br>
           <span th:text="${hotlineLabeled.mayoralHotline.complainantName}">投诉人姓名</span>
           <br>
           <span th:text="${hotlineLabeled.mayoralHotline.complainantCalledPhoneNumber}">手机号码</span>
-        </td>
-        <td>
-          <b th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></b>
-          <p th:text="${hotlineLabeled.mayoralHotline.appealDetail}"></p>
-          <i th:text="${hotlineLabeled.mayoralHotline.remark}"></i>
-        </td>
-        <td>
-          <b th:text="${#dates.format(hotlineLabeled.mayoralHotline.deadlineDateTime,'yy-MM-dd [HH:mm]')}"></b>
           <br>
-          <span th:text="${#dates.format(hotlineLabeled.mayoralHotline.appealDateTime,'yy-MM-dd [HH:mm]')}"></span>
+          <span>【诉求目的】 <b th:text="${hotlineLabeled.mayoralHotline.appealPurpose}"></b></span>
+          <br>
+          <span th:text="|【受理内容】 ${hotlineLabeled.mayoralHotline.appealDetail}|"></span>
+          <br>
+          <span>【办结时限】 <b th:text="${#dates.format(hotlineLabeled.mayoralHotline.deadlineDateTime,'yy-MM-dd HH:mm')}"></b></span>
+          <br>
+          <span th:text="|【交办时间】 ${#dates.format(hotlineLabeled.mayoralHotline.appealDateTime,'yy-MM-dd HH:mm')}|"></span>
+          <br>
+          <span th:if="${hotlineLabeled.mayoralHotline.remark!=''}">
+            【备注】 <i th:text="${hotlineLabeled.mayoralHotline.remark}"></i>
+          </span>
+          <br>
+          <button class="btn btn-outline-primary btn-sm hotlineDetailCopyToClipboardBtn">复制到剪切板</button>
         </td>
         <td>
           <select class="typeSelect">
