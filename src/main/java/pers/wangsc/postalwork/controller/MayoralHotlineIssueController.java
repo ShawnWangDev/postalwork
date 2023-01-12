@@ -38,7 +38,7 @@ public class MayoralHotlineIssueController {
     public ModelAndView addMissingMayoralHotline() {
         mayoralHotlineService.saveFromFiles(filesDirectory, tableLocation);
         int addMissingMayoralHotlineAmount = mayoralHotlineIssueService.addMissingMayoralHotline();
-        ModelAndView mvList = list(1);
+        ModelAndView mvList = home(1);
         mvList.addObject("addMissingMayoralHotlineAmount", addMissingMayoralHotlineAmount);
         return mvList;
     }
@@ -48,8 +48,8 @@ public class MayoralHotlineIssueController {
         return addMissingMayoralHotline();
     }
 
-    @GetMapping("/list")
-    public ModelAndView list(@RequestParam(value = "page") int page) {
+    @GetMapping("/home")
+    public ModelAndView home(@RequestParam(value = "page") int page) {
         int addedFilesCounter = mayoralHotlineService.saveFromFiles(filesDirectory, tableLocation);
         if (addedFilesCounter > 0) {
             System.out.printf("added %d records.\n", addedFilesCounter);
@@ -62,7 +62,7 @@ public class MayoralHotlineIssueController {
                 hotlineIssueList.add(issue);
             }
         }
-        ModelAndView mv = new ModelAndView("mayoral_hotline/list");
+        ModelAndView mv = new ModelAndView("mayoral_hotline/home");
         mv.addObject("hotlineIssueList", hotlineIssueList);
         mv.addObject("totalPage", mayoralHotlinePage.getTotalPages());
 //        mv.addObject("addedFilesCounter", addedFilesCounter);
@@ -75,7 +75,7 @@ public class MayoralHotlineIssueController {
     @PostMapping("/update")
     public ModelAndView update(@RequestBody MayoralHotlineIssue mayoralHotlineIssue) {
         mayoralHotlineIssueService.update(mayoralHotlineIssue);
-        return list(1);
+        return home(1);
     }
 
     @GetMapping("/statistic")

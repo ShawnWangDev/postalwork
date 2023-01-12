@@ -2,114 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
 <body>
 <div th:fragment="content">
-  <style>
-    .table img{
-      width:60px;
-      height:60px;
-    }
-    .expressBrandSelect{
-      width:60px;
-    }
-    .issue_condition_id_1{
-      /*
-      待设定
-      Light Gray
-      */
-      background-color: #fff;
-    }
-    .issue_condition_id_2{
-      /*
-      已通知
-      Khaki
-      */
-      background-color: #f0e68c;
-    }
-    .issue_condition_id_3{
-      /*
-      待核实
-      Golden Poppy
-      */
-      background-color: #fcc200;
-    }
-    .issue_condition_id_4{
-      /*
-      达成一致
-      Iceberg
-      */
-      background-color: #71a6d2;
-    }
-    .issue_condition_id_5{
-      /*
-      未达成一致
-      Steel Blue
-      */
-      background-color: #4682b4;
-    }
-    .issue_condition_id_6{
-      /*
-      正在处理
-      Vivid lime green
-      */
-      background-color: #a6d608;
-    }
-    .issue_condition_id_7{
-      /*
-      因疫情
-      Sacramento State Green
-      */
-      background-color: #00563f;
-    }
-    .issue_condition_id_8{
-      /*
-      建议联系发件方
-      Russian Green
-      */
-      background-color: #679267;
-    }
-    .issue_condition_id_9{
-      /*
-      通知企业前已妥投
-      Moss green
-      */
-      background-color: #8a9a5b;
-    }
-    .issue_condition_id_10{
-      /*
-      !回复
-      Peru
-      */
-      background-color: #cd853f;
-    }
-    .issue_condition_id_11{
-      /*
-      转办
-      UCLA Blue
-      */
-      background-color: #536895;
-    }
-    .issue_condition_id_12{
-      /*
-      建议联系配送方
-      Fern Green
-      */
-      background-color: #4f7942;
-    }
-    .issue_condition_id_13{
-      /*
-      无责
-      Feldgrau
-      */
-      background-color: #4d5d53;
-    }
-    .issue_condition_id_14{
-      /*
-      已撤单
-      British Racing Green
-      */
-      background-color: #004225;
-    }
-
-  </style>
+  <link rel="stylesheet" th:href="@{/static/css/mayoral_hotline/home.css}">
   <div>
     <form action="/mayoral_hotline_issue/add_missing_mayoral_hotline" method="post">
       <button class="btn btn-primary">添加缺失项</button>
@@ -172,7 +65,7 @@
             </select>
           </td>
         </block>
-        <td>
+        <td style="font-size:14px;line-height:120%;">
           <span th:text="|【编号】 ${#strings.substring(hotlineIssue.mayoralHotline.fileName, 4, 18)}|"></span>
           <br>
           <span th:text="${hotlineIssue.mayoralHotline.complainantName}">投诉人姓名</span>
@@ -223,7 +116,7 @@
     </tbody>
   </table>
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <script src="/static/js/mayoral_hotline.js"></script>
+  <script th:src="@{/static/js/mayoral_hotline/home.js}"></script>
 </div>
 </body>
 </html>

@@ -1,0 +1,119 @@
+.table img{
+  width:60px;
+  height:60px;
+}
+.expressBrandSelect{
+  width:60px;
+}
+.issue_condition_id_1{
+  /*
+  待设定
+  Light Gray
+  */
+  background-color: #fff;
+}
+.issue_condition_id_2{
+  /*
+  已通知
+  Khaki
+  */
+  background-color: #f0e68c;
+}
+.issue_condition_id_3{
+  /*
+  待核实
+  Golden Poppy
+  */
+  background-color: #fcc200;
+}
+.issue_condition_id_4{
+  /*
+  达成一致
+  Iceberg
+  */
+  background-color: #71a6d2;
+}
+.issue_condition_id_5{
+  /*
+  未达成一致
+  Steel Blue
+  */
+  background-color: #4682b4;
+}
+.issue_condition_id_6{
+  /*
+  正在处理
+  Vivid lime green
+  */
+  background-color: #a6d608;
+}
+.issue_condition_id_7{
+  /*
+  因疫情
+  Sacramento State Green
+  */
+  background-color: #00563f;
+}
+.issue_condition_id_8{
+  /*
+  建议联系发件方
+  Russian Green
+  */
+  background-color: #679267;
+}
+.issue_condition_id_9{
+  /*
+  通知企业前已妥投
+  Moss green
+  */
+  background-color: #8a9a5b;
+}
+.issue_condition_id_10{
+  /*
+  !回复
+  Peru
+  */
+  background-color: #cd853f;
+}
+.issue_condition_id_11{
+  /*
+  转办
+  UCLA Blue
+  */
+  background-color: #536895;
+}
+.issue_condition_id_12{
+  /*
+  建议联系配送方
+  Fern Green
+  */
+  background-color: #4f7942;
+}
+.issue_condition_id_13{
+  /*
+  无责
+  Feldgrau
+  */
+  background-color: #4d5d53;
+}
+.issue_condition_id_14{
+  /*
+  已撤单
+  British Racing Green
+  */
+  background-color: #004225;
+}
+.issue_condition_id_15{
+  /*
+  无价值证明
+  British Racing Green
+  */
+  background-color: #4d5d53;
+}
+.issue_condition_id_16{
+  /*
+  收寄双方纠纷
+  British Racing Green
+  */
+  background-color: #4d5d53;
+}
