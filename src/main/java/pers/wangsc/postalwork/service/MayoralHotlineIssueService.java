@@ -118,4 +118,24 @@ public class MayoralHotlineIssueService {
         StatisticStrategy strategy=new StatisticStrategy(issueList);
         return strategy;
     }
+
+    public List<MayoralHotlineIssue> findByIssueConditionIdList(List<Integer> idList,String dateStr){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = dateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        List<MayoralHotlineIssue> result=new ArrayList<>();
+        for(var id:idList){
+            result.addAll(mayoralHotlineIssueDao.findByIssueConditionId(id,date));
+        }
+        return result;
+    }
+
+    public List<MayoralHotlineIssue> findToBeDone(String dateStr){
+        StatisticStrategy statisticStrategy=new StatisticStrategy();
+        return findByIssueConditionIdList(statisticStrategy.getToBeDoneIdList(),dateStr);
+    }
 }

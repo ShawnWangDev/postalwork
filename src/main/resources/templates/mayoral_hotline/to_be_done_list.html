@@ -1,0 +1,90 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+<div th:fragment="content">
+  <form action="/mayoral_hotline_issue/find_to_be_done" method="get">
+    <input class="form-control" name="date" type="text" placeholder="输入日期，格式2000-01-01"/><br>
+    <input class="btn btn-primary" type="submit">
+  </form>
+  <block th:if="${toBeDoneList}">
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>序号</th>
+            <th>编号</th>
+            <th>信息概览</th>
+            <th>类型</th>
+            <th>状态</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="element,state:${toBeDoneList}">
+            <td th:text="${state.index+1}"></td>
+            <td><span class="hotlineCode" th:text="${#strings.substring(element.mayoralHotline.fileName,4,18)}"></span></td>
+            <td>
+              <b th:text="${element.mayoralHotline.appealPurpose}"></b><br>
+              <span th:text="${element.mayoralHotline.complainantName}"></span><br>
+              <span th:text="${element.mayoralHotline.complainantCalledPhoneNumber}"></span>
+            </td>
+            <td th:text="${element.issueType.name}"></td>
+            <td th:text="${element.issueCondition.name}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <button id="compareCodeBtn" class="btn btn-primary">对比</button>
+        <textarea id="inputCodes" class="form-control" style="height:320px;"></textarea>
+        <div id="set1">
+          <h3>本地已完成，市长热线未回复</h3>
+        </div>
+        <hr>
+        <div id="set2">
+          <h3>市长已回复</h3>
+        </div>
+      </div>
+    </div>
+  </block>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script type="text/javascript">
+  var getFirstArrayNotInSecondArray=function(a1,a2){
+     let set2=new Set(a2);
+     let resultArray=new Array();
+     for(let ele of a1){
+      if(!set2.has(ele)){
+        resultArray.push(ele);
+      }
+     }
+     return resultArray;
+  }
+
+  $("#compareCodeBtn").click(function(){
+    let inputCodeArray=new Array();
+    let inputCodes = $("#inputCodes").val().split("\n");
+    let regex=new RegExp("\\d{14}");
+    for(let code of inputCodes){
+      if(code.trim().match(regex)){
+        inputCodeArray.push(code);
+      }
+    }
+    let tableCellCodeArray = new Array();
+    $('.hotlineCode').each(function(){
+      let code=$(this).text();
+      tableCellCodeArray.push(code);
+    });
+    $("#set1").children("p").remove();
+    $("#set2").children("p").remove();
+    for(let code of getFirstArrayNotInSecondArray(inputCodeArray,tableCellCodeArray)){
+      $("#set1").append($("<p>"+code+"</p>"));
+    }
+    for(let code of getFirstArrayNotInSecondArray(tableCellCodeArray,inputCodeArray)){
+      $("#set2").append($("<p>"+code+"</p>"));
+    }
+  });
+  </script>
+  </block>
+</div>
+</body>
+</html>

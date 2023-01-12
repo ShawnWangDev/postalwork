@@ -74,3 +74,22 @@ function lineStepExtract() {
     let _outputText = document.getElementById("outputText");
     _outputText.value = resultString;
 }
+
+function regexExtract() {
+    let _regexString = document.getElementById("regexString");
+    let originalTextArray = getInputTextNoEmptyLineArray();
+    let regex=new RegExp(_regexString.value);
+    let resultArray=new Array();
+    for(let line of originalTextArray){
+        if(line.match(regex)){
+            resultArray.push(line.trim());
+        }
+    }
+    let resultString="";
+    for(let result of resultArray){
+        let line=result+"\n";
+        resultString+=line;
+    }
+    let _outputText = document.getElementById("outputText");
+    _outputText.value=resultString;
+}

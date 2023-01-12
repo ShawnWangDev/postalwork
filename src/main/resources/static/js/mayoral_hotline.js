@@ -119,7 +119,7 @@ $(".codeAndAppealPurposeCopyToClipboardBtn").each(function () {
 $(".hotlineDetailCopyToClipboardBtn").each(function () {
     $(this).click(function () {
         let spans = $(this).siblings('span');
-        let textForCopy = "\n";
+        let textForCopy = "\n▰▰▰▰▰▰\n";
         for (let span of spans) {
             let text = span.innerText + "\n";
             textForCopy += text;

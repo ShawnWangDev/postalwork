@@ -122,4 +122,17 @@ public class MayoralHotlineIssueController {
         mv.addObject("invalidList", strategy.getInvalidList());
         return mv;
     }
+
+    @GetMapping("/to_be_done")
+    public ModelAndView toBeDonePage() {
+        ModelAndView mv = new ModelAndView("mayoral_hotline/to_be_done_list");
+        return mv;
+    }
+
+    @GetMapping("/find_to_be_done")
+    public ModelAndView findToBeDone(@RequestParam("date") String date) {
+        ModelAndView mv = toBeDonePage();
+        mv.addObject("toBeDoneList", mayoralHotlineIssueService.findToBeDone(date));
+        return mv;
+    }
 }
